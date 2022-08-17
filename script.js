@@ -1,5 +1,16 @@
-let playerScore;
-let computerScore;
+let playerScore = 0;
+let computerScore = 0;
+
+function createButtons(...text) {
+    let choiceButtons = document.querySelector('#choiceButtons');
+    document.body.appendChild(choiceButtons);
+
+    text.forEach(ele => {
+        let btn = document.createElement('button');
+        btn.textContent = ele;
+        choiceButtons.appendChild(btn);
+    })
+}
 
 function getComputerChoice() {
     let choiceNum = Math.floor(Math.random() * 3);
@@ -14,50 +25,63 @@ function getComputerChoice() {
 
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toUpperCase();
-    
+    let resultsDiv = document.querySelector('#roundResults');
+        
     if (playerSelection === computerSelection) {
-        console.log(`You Tie!`);
+        resultsDiv.textContent = `You Tie!`;
     } else if ((playerSelection === "ROCK" && computerSelection === "SCISSORS") ||
             (playerSelection === "PAPER" && computerSelection === "ROCK") ||
             (playerSelection === "SCISSORS" && computerSelection === "PAPER")) {
         playerScore++;       
-        console.log(`You win! ${playerSelection} beats ${computerSelection}!`);
+        resultsDiv.textContent = `You win! ${playerSelection} beats ${computerSelection}!`;
     } else {
         computerScore++;
-        console.log(`You lose! ${computerSelection} beats ${playerSelection}!`);
+        resultsDiv.textContent = `You lose! ${computerSelection} beats ${playerSelection}!`;
     }
-}
 
-function playFiveRounds() {
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Choose Rock, Paper, or Scissors... ");
-        let computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection);
-    }
-}
+    document.body.appendChild(resultsDiv);
 
-function playTieBreaker(playerScore, computerScore) {
-    while (playerScore === computerScore) {
-        playRound()
-    }
+    let scoreDiv = document.createElement('div');
+    scoreDiv.textContent = `Player Score: ${playerScore} - Computer Score: ${computerScore}`;
+    resultsDiv.appendChild(scoreDiv);
 }
 
 function compareScores(playerScore, computerScore) {
+    let endgameResults = document.querySelector('#gameResults');
+
     if (playerScore > computerScore) {
-        return `You Win! ${playerScore} to ${computerScore}`
+        endgameResults.textContent = `You Win! ${playerScore} to ${computerScore}`
     } else {
-        return `You Lose! ${computerScore} to ${playerScore}`
+        endgameResults.textContent = `You Lose! ${computerScore} to ${playerScore}`
+    }
+
+    document.body.appendChild(endgameResults);
+}
+
+function playOnClick(e) {
+    let playerChoice = e.target.textContent;
+    let computerChoice = getComputerChoice();
+    playRound(playerChoice, computerChoice);
+
+    if (playerScore === 5 || computerScore === 5) {
+        buttons.forEach(button => 
+            button.removeEventListener('click', playOnClick));
+
+        compareScores(playerScore, computerScore);
     }
 }
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-    
-    playFiveRounds();
-    playTieBreaker(playerScore, computerScore);
+createButtons('Rock', 'Paper', 'Scissors');
 
-    let response = compareScores(playerScore, computerScore);
-    
-    console.log(response);
-}
+let buttons = document.querySelectorAll('button');
+
+buttons.forEach(button =>
+    button.addEventListener('click', playOnClick));
+
+
+
+
+
+
+
+

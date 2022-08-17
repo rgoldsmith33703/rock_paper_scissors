@@ -1,0 +1,23 @@
+body {
+    text-align: center;
+}
+
+#choiceButtons {
+    margin-top: 30px; margin-bottom: 50px;
+}
+
+#roundResults {
+    font-size: 1.75em;
+}
+
+#gameResults {
+    margin-top: 50px; margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: bolder;
+}
+
+button {
+    width: 96px; height: 48px;
+    font-size: 1.5em;
+    margin: 4px;
+}
